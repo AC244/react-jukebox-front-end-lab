@@ -1,63 +1,47 @@
-import React, { useState } from "react"
+import { useState } from "react"
 
-const TrackForm = ({ onSubmit, trackToEdit }) => {
-  const [title, setTitle] = useState(trackToEdit ? trackToEdit.title : "")
-  const [artist, setArtist] = useState(trackToEdit ? trackToEdit.artist : "")
-  const [releaseYear, setReleaseYear] = useState(trackToEdit ? trackToEdit.releaseYear : "")
-  const [posterImage, setPosterImage] = useState(trackToEdit ? trackToEdit.posterImage : "")
+const TrackForm = ({ handleAddTrack, selected, handleUpdateTrack }) => {
+  const initialState = {
+    title: " ",
+    artist: " "
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const track = { title, artist, releaseYear, posterImage }
-    onSubmit(track)
-    setTitle("")
-    setArtist("")
-    setReleaseYear("")
-    setPosterImage("")
+  const [formData, setFormData] = useState(selected ? selected : initialState);
+  const handleChange = (evt) => {
+    setFormData({ ...formData, [evt.target.name]: evt.target.value });
+  };
+
+  const handleSubmitForm = (evt) => {
+    evt.preventDefault()
+    if (selected) {
+      handleUpdateTrack(formData, selected._id)
+    } else {
+      handleAddTrack(formData)
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>{trackToEdit ? "Edit Track" : "Add New Track"}</h2>
-      <label>
-        Title:
+    <div>
+      <form onSubmit={handleSubmitForm}>
+        <label htmlFor="title"> Title </label>
         <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Song Title"
+          id="title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
         />
-      </label>
-      <label>
-        Artist:
+        <label htmlFor="artist"> Artist </label>
         <input
-          type="text"
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-          placeholder="Artist Name"
+          id="artist"
+          name="artist"
+          value={formData.artist}
+          onChange={handleChange}
         />
-      </label>
-      <label>
-        Release Year:
-        <input
-          type="number"
-          value={releaseYear}
-          onChange={(e) => setReleaseYear(e.target.value)}
-          placeholder="Release Year"
-        />
-      </label>
-      <label>
-        Poster Image URL:
-        <input
-          type="text"
-          value={posterImage}
-          onChange={(e) => setPosterImage(e.target.value)}
-          placeholder="Image URL"
-        />
-      </label>
-      <button type="submit">{trackToEdit ? "Update Track" : "Add Track"}</button>
-    </form>
-  )
+        <button type="submit">{selected ? 'Update Track' : 'Add New Track'}</button>
+      </form>
+    </div>
+  );
 }
 
 export default TrackForm
