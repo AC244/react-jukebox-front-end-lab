@@ -31,7 +31,11 @@ const App = () => {
   }
 
   const handleFormView = (track) => {
-    if (!track.title) setSelected(null)
+    if (!track.title) {
+      setSelected(null)
+    } else {
+      setSelected(track)
+    }
     setIsFormOpen(!isFormOpen)
   }
   const updatePlaying = (track) => {

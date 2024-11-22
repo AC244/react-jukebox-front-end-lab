@@ -6,6 +6,7 @@ const TrackList = ({ trackList, handleFormView, isFormOpen, handleDeleteTrack, u
     <a key={track._id}>
       <li>{track.title} by {track.artist}
         <button onClick={() => updatePlaying(track)}>Play</button>
+        <button onClick={() => handleFormView(track)}>Edit</button>
         <button onClick={() => handleDeleteTrack(track._id)}>Delete</button>
       </li>
     </a>
